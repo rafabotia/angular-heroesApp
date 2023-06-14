@@ -1,3 +1,3 @@
 export const environments = {
-  baseUrl: 'http://fernando-herrar.com/api'
+  baseUrl: 'http://localhost:3000'
 }
