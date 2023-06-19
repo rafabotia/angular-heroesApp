@@ -38,11 +38,22 @@ export class NewPageComponent {
 
     if ( this.heroForm.invalid ) return;
 
+    if ( this.currentHero.id ) {
+      this.heroesService.updateHero( this.currentHero )
+        .subscribe( hero => {
+          // TODO: mostrar snackbar
+        });
+
+      return;
+    }
+
+    // Si llega hasta aqui es que no tenemos id y entonces queremos crear
+    this.heroesService.addHero( this.currentHero )
+      .subscribe( hero => {
+        // TODO: mostrar snackbar, y navegar a /heroes/edit/ hero.id
+      })
+
     // this.heroesService.updateHero( this.heroForm.value ) --> No es válido, no es exactamente lo que espera
 
-    console.log({
-      formIsValid: this.heroForm.valid,
-      value: this.heroForm.value,
-    })
   }
 }
