@@ -55,6 +55,7 @@ export class NewPageComponent implements OnInit {
         }
 
         this.heroForm.reset( hero );
+
         return;
 
       });
