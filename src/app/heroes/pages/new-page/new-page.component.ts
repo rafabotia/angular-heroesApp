@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Hero, Publisher } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/heroes.service';
-import { switchMap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
@@ -104,15 +104,31 @@ export class NewPageComponent implements OnInit {
       data: this.heroForm.value,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
-      // console.log({ result });
+    dialogRef.afterClosed()
+      .pipe(
+        filter( (result: boolean) => result ),
+        // tap( result => console.log(result) )
+        switchMap( () => this.heroesService.deleteHeroById( this.currentHero.id ) ),
+        // tap( wasDeleted => console.log({ wasDeleted }) ),
+        filter( (wasDeleted: boolean) => wasDeleted ),
+      )
+      .subscribe(result => {
+        // console.log({ result });
+        this.router.navigate(['/heroes'])
+      })
 
-      if ( !result ) return;
+    // dialogRef.afterClosed().subscribe(result => {
+    //   // console.log('The dialog was closed');
+    //   // console.log({ result });
 
-      this.heroesService.deleteHeroById( this.currentHero.id );
-      this.router.navigate(['/heroes'])
-    });
+    //   if ( !result ) return;
+
+    //   this.heroesService.deleteHeroById( this.currentHero.id )
+    //     .subscribe( wasDeleted => {
+    //       if ( wasDeleted )
+    //         this.router.navigate(['/heroes'])
+    //     })
+    // });
 
 
   }
