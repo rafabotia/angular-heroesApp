@@ -7,7 +7,7 @@ import { environments } from 'src/environments/environments';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({providedIn: 'root'})
-export class ServiceNameService {
+export class AuthService {
 
   private baseUrl = environments.baseUrl; // Que coja el environments no el de environments.prod
   private user?: User; // Declarar como privado para que no se pueda acceder directamente desde fuera de este servicio
@@ -31,9 +31,14 @@ export class ServiceNameService {
     return this.http.get<User>(`${ this.baseUrl }/users/1`)
       .pipe(
         tap( user => this.user = user ),
-        tap( user => localStorage.setItem('token', user.id.toString() ) ),
+        tap( user => localStorage.setItem('token', 'asasdkl.asdlasld.asdlksaldd' ) ),
       );
 
+  }
+
+  logout() {
+    this.user = undefined;
+    localStorage.clear();
   }
 
 }
